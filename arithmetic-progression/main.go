@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/nurlybekovnt/root-me-programmation/utils"
 )
 
 const (
@@ -59,7 +61,7 @@ func Fetch() (challenge Challenge, err error) {
 	}
 	defer resp.Body.Close()
 
-	lines, err := ReadLines(bufio.NewReader(resp.Body))
+	lines, err := utils.ReadLines(bufio.NewReader(resp.Body))
 	if err != nil {
 		return Challenge{}, err
 	}
@@ -112,24 +114,6 @@ func Fetch() (challenge Challenge, err error) {
 
 	challenge.cookies = resp.Cookies()
 	return
-}
-
-func ReadLines(r *bufio.Reader) ([]string, error) {
-	var lines []string
-
-	for {
-		line, _, err := r.ReadLine()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-
-		lines = append(lines, string(line))
-	}
-
-	return lines, nil
 }
 
 type Solution struct {
